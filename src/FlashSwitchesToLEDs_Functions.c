@@ -19,19 +19,24 @@ void IOsetup();
 
 int main() {
 
+    int switches_value;
+
     IOsetup();
     while(1){
+        switches_value = READ_GPIO(GPIO_SWs);
+        switches_value = switches_value >> 16;
 
+        WRITE_GPIO(GPIO_LEDs, switches_value);
+        delay(DELAY);
     }
 
 }
+
 
 void IOsetup(){
     int En_Value = 0xFFFF;
     WRITE_GPIO(GPIO_INOUT, En_Value);
 }
-
-
 
 void delay (int num){
     for (int i = 0; i < num; i++);
