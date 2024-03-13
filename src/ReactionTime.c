@@ -16,10 +16,9 @@ entre cada vez que el usuario intente probar su tiempo de reacción.*/
 
 void IOsetup();
 void playGame();
+void delay(__uint32_t num);
 
 int main() {
-
-    int switches_value;
 
     IOsetup();
    
@@ -36,10 +35,13 @@ int main() {
 void playGame(){
     __uint32_t counter=0;
     __uint8_t fin = 0;
+    
     //APAGO LOS LEDS
     WRITE_GPIO(GPIO_LEDs, 0x0);
-    // estepero tiempo aleatorio no mayor a 3 seg
+
+    // esepero tiempo aleatorio no mayor a 3 seg
     delay(rand() % (3000000+1));
+    
     //inicio un contador hasta detectar que baja el sw
     while (fin != 1)
     {
@@ -49,7 +51,7 @@ void playGame(){
 
     //muestro el contador con los leds en binario y por serie
     WRITE_GPIO(GPIO_LEDs, counter);
-    printfNexys("numero de elementos de B: %d\n", j);
+    printfNexys("Tiempo de reaccion: %d\n", counter);
 
     return;
 }
@@ -57,4 +59,10 @@ void playGame(){
 void IOsetup() {
     int En_value = 0x0000FFFF;
     WRITE_GPIO(GPIO_INOUT, En_value);
+}
+
+void delay(__uint32_t num){
+    for (volatile int i = 0; i < num; i++)
+    {
+    }
 }
