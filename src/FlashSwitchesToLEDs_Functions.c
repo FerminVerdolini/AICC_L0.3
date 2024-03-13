@@ -9,37 +9,30 @@
 #define GPIO_SWs    0x80001400
 #define GPIO_LEDs   0x80001404
 #define GPIO_INOUT  0x80001408
-
+#define DELAY       0x1000000
 
 #define READ_GPIO(dir) (*(volatile unsigned int *)(dir))
 #define WRITE_GPIO(dir, value) { (*(volatile unsigned int *)(dir)) = (value); }
 
+void delay(int num);
 void IOsetup();
-unsigned int getSwitchesInvert();
 
 int main() {
 
-    int switches_value;
-
     IOsetup();
-    /* Constantemente lee el valor de los switches y desplaza
-    ese valor, negado, las posiciones para los leds
-    y hace un sleep para mostrar el valor
-    */
-    while (1)
-    {
-        switches_value = getSwitchesInvert();
-        WRITE_GPIO(GPIO_LEDs, switches_value);
+    while(1){
+
     }
 
-    return 0;
 }
 
-unsigned int getSwitchesInvert() {
-    return (~READ_GPIO(GPIO_SWs)) >> 16;
+void IOsetup(){
+    int En_Value = 0xFFFF;
+    WRITE_GPIO(GPIO_INOUT, En_Value);
 }
 
-void IOsetup() {
-    int En_value = 0x0000FFFF;
-    WRITE_GPIO(GPIO_INOUT, En_value);
+
+
+void delay (int num){
+    for (int i = 0; i < num; i++);
 }
